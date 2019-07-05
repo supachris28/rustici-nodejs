@@ -9,7 +9,7 @@ export default interface SuperAgentClient {
    * The authentication methods to be included for all API calls.
    * @type {Object}
    */
-  authTypes: Array<string>;
+  authTypes: string[];
   
   /**
    * The authorised username to get authenticated.

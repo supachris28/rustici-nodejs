@@ -1,11 +1,11 @@
 import Superagent from "superagent";
-import ISuperAgentClient from './ISuperAgentClient';
-export default class SuperAgentClientImpl implements ISuperAgentClient {
+import SuperAgentClient from './SuperAgentClient';
+export default class SuperAgentClientImpl implements SuperAgentClient {
     username: string;
     password: string;
     apiKey: string;
     accessToken: string;
-    authTypes: Array<string>;
+    authTypes: string[];
     basePath: string;
     headerParams: object;
     timeout: number;
@@ -14,12 +14,13 @@ export default class SuperAgentClientImpl implements ISuperAgentClient {
     contentType: string;
     formParams: object;
     responseType: string;
+    private logger;
     private request;
     constructor(config: any);
     postRequest(path: string, body: object): Promise<Superagent.Response>;
-    getRequest(path: string, queryParams: object, pathParams: object): Promise<Object>;
-    putRequest(path: string, body: object): Promise<Object>;
-    deleteRequest(path: string, pathParams: object): Promise<Object>;
+    getRequest(path: string): Promise<Superagent.Response>;
+    putRequest(path: string, body: object): Promise<Superagent.Response>;
+    deleteRequest(path: string): Promise<Superagent.Response>;
     /**
      * Creates the SuperAgent request.
      *
@@ -28,7 +29,7 @@ export default class SuperAgentClientImpl implements ISuperAgentClient {
      * @param {object} pathParams
      * @param {object} body
      */
-    createRequest(httpMethod: string, path: string, body: object): Superagent.SuperAgentRequest;
+    private createRequest;
     /**
      * Builds full URL by appending the given path to the base URL and replacing path parameter place-holders with parameter values.
      * NOTE: query parameters are not handled here.
@@ -37,19 +38,19 @@ export default class SuperAgentClientImpl implements ISuperAgentClient {
      * @param {String} apiBasePath Base path defined in the path, operation level to override the default one
      * @returns {String} The encoded path with parameter values substituted.
      */
-    buildUrl(path: string, pathParams: any, apiBasePath: string): string;
+    private buildUrl;
     /**
      * Returns a string representation for an actual parameter.
      * @param param The actual parameter.
      * @returns {String} The string representation of <code>param</code>.
      */
-    paramToString(param: any): any;
+    private paramToString;
     /**
-      * Applies authentication headers to the request.
-      * @param {Object} request The request object created by a <code>superagent()</code> call.
-      * @param {Array.<String>} authNames An array of authentication method names.
-      */
-    applyAuthToRequest(authNames: Array<string>): void;
+     * Applies authentication headers to the request.
+     * @param {Object} request The request object created by a <code>superagent()</code> call.
+     * @param {Array.<String>} authNames An array of authentication method names.
+     */
+    private applyAuthToRequest;
     /**
      * Normalizes parameter values:
      * <ul>
@@ -60,11 +61,11 @@ export default class SuperAgentClientImpl implements ISuperAgentClient {
      * @param {Object.<String, Object>} params The parameters as object properties.
      * @returns {Object.<String, Object>} normalized parameters.
      */
-    normalizeParams(params: any): any;
+    private normalizeParams;
     /**
-      * Checks whether the given parameter value represents file-like content.
-      * @param param The parameter to check.
-      * @returns {Boolean} <code>true</code> if <code>param</code> represents a file.
-      */
-    isFileParam(param: any): boolean;
+     * Checks whether the given parameter value represents file-like content.
+     * @param param The parameter to check.
+     * @returns {Boolean} <code>true</code> if <code>param</code> represents a file.
+     */
+    private isFileParam;
 }

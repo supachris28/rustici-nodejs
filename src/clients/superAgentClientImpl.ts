@@ -245,7 +245,10 @@ export default class SuperAgentClientImpl implements SuperAgentClient {
       let fs;
       try {
         fs = require('fs');
-      } catch (err) { }
+      } catch (err) { 
+        return false;
+      }
+
       if (fs && fs.ReadStream && param instanceof fs.ReadStream) {
         return true;
       }
