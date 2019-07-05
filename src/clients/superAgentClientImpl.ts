@@ -2,7 +2,6 @@ import Superagent from "superagent";
 import Querystring from "querystring";
 import debug from "debug";
 import SuperAgentClient from './SuperAgentClient';
-import Index from '../index';
 import Logger from '../models/logger';
 
 export default class SuperAgentClientImpl implements SuperAgentClient {
