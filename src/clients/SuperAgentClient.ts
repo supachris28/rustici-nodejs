@@ -1,4 +1,4 @@
-export default interface ISuperAgentClient {
+export default interface SuperAgentClient {
   /**
    * The base URL against which to resolve every API call's (relative) path.
    * @type {String}
@@ -84,11 +84,9 @@ export default interface ISuperAgentClient {
   /**
    * Get request.
    * @param {String} path 
-   * @param {Object} queryParams 
-   * @param {Object} pathParams 
    * @returns {Promise<Object>}
    */
-  getRequest(path: string, queryParams: object, pathParams: object): Promise<object>;
+  getRequest(path: string): Promise<object>;
 
   /**
    * Put request.
@@ -101,8 +99,7 @@ export default interface ISuperAgentClient {
   /**
    * Delete request.
    * @param {String} path  
-   * @param {Object} pathParams 
    * @returns {Promise<Object>}
    */
-  deleteRequest(path: string, pathParams: object): Promise<object>;
+  deleteRequest(path: string): Promise<object>;
 }

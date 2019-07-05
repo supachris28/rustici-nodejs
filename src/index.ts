@@ -14,8 +14,13 @@ export default class ClientSdkFactory {
    * @returns {Object}
    */
   constructor(client: string, config: any) {
-    if (!client) throw new Error('client is required');
-    if (!config) throw new Error('config is required');
+    if (!client) {
+      throw new Error('client is required');
+    }
+    
+    if (!config) {
+      throw new Error('config is required');
+    }
 
     if (client === 'superagent') {
       this.clientImpl = new SuperAgentClientImpl(config);

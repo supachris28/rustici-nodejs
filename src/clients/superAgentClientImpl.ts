@@ -1,23 +1,26 @@
 import Superagent from "superagent";
 import Querystring from "querystring";
-import ISuperAgentClient from './ISuperAgentClient';
+import debug from "debug";
+import SuperAgentClient from './SuperAgentClient';
 import Index from '../index';
+import Logger from '../models/logger';
 
-export default class SuperAgentClientImpl implements ISuperAgentClient {
-  username: string;
-  password: string;
-  apiKey: string;
-  accessToken: string;
-  authTypes: Array<string>;
-  basePath: string;
-  headerParams: object;
-  timeout: number;
-  pathParams: object;
-  queryParams: object;
-  contentType: string;
-  formParams: object;
-  responseType: string 
+export default class SuperAgentClientImpl implements SuperAgentClient {
+  public username: string;
+  public password: string;
+  public apiKey: string;
+  public accessToken: string;
+  public authTypes: string[];
+  public basePath: string;
+  public headerParams: object;
+  public timeout: number;
+  public pathParams: object;
+  public queryParams: object;
+  public contentType: string;
+  public formParams: object;
+  public responseType: string;
 
+  private logger: Logger;
   private request: Superagent.SuperAgentRequest;
 
   constructor(config: any) {
@@ -35,23 +38,33 @@ export default class SuperAgentClientImpl implements ISuperAgentClient {
     this.contentType = config.contentType || 'application/json';
     this.formParams = config.formParams || {};
     this.responseType = config.responseType;
+
+    const infoLogger = debug('rustici-sdk:info');
+    const errorLogger = debug('rustici-sdk:error');
+    this.logger = {
+      info: infoLogger,
+      error: errorLogger,
+    };
   }
 
-  postRequest(path: string, body: object) {
+  public postRequest(path: string, body: object) {
     this.request = this.createRequest('post', path, body);
     return this.request.then(response => response);
   }
 
-  getRequest(path: string, queryParams: object, pathParams: object) {
-    return Promise.resolve(new Object());
+  public getRequest(path: string) {
+    this.request = this.createRequest('get', path, undefined);
+    return this.request.then(response => response);
   }
 
-  putRequest(path: string, body: object) {
-    return Promise.resolve(new Object());
+  public putRequest(path: string, body: object) {
+    this.request = this.createRequest('get', path, body);
+    return this.request.then(response => response);
   }
 
-  deleteRequest(path: string, pathParams: object) {
-    return Promise.resolve(new Object());
+  public deleteRequest(path: string) {
+    this.request = this.createRequest('get', path, undefined);
+    return this.request.then(response => response);
   }
 
   /**
@@ -62,35 +75,49 @@ export default class SuperAgentClientImpl implements ISuperAgentClient {
    * @param {object} pathParams 
    * @param {object} body 
    */
-  createRequest(httpMethod: string, path: string, body: object) {
-    const url = this.buildUrl(path, this.pathParams, '');
-    let request = Superagent(httpMethod, url);
-    this.applyAuthToRequest(this.authTypes);
+  private createRequest(httpMethod: string, path: string, body: any) {
+    try {
+      const url = this.buildUrl(path, this.pathParams, '');
+      this.logger.info(url);
 
-    if (this.queryParams) request.query(this.normalizeParams(this.queryParams));
-    if (this.headerParams) request.set(this.normalizeParams(this.headerParams));
+      const request = Superagent(httpMethod, url);
+      this.applyAuthToRequest(this.authTypes);
 
-    if (this.contentType === 'application/x-www-form-urlencoded') {
-      request.send(Querystring.stringify(this.normalizeParams(this.formParams)));
-    } else if (this.contentType == 'multipart/form-data') {
-      var _formParams = this.normalizeParams(this.formParams);
-      for (var key in _formParams) {
-        if (_formParams.hasOwnProperty(key)) {
-          if (this.isFileParam(_formParams[key])) {
-            // file field
-            request.attach(key, _formParams[key]);
-          } else {
-            request.field(key, _formParams[key]);
+      if (this.queryParams) {
+        request.query(this.normalizeParams(this.queryParams));
+      }
+
+      if (this.headerParams) {
+        request.set(this.normalizeParams(this.headerParams));
+      }
+
+      if (this.contentType === 'application/x-www-form-urlencoded') {
+        request.send(Querystring.stringify(this.normalizeParams(this.formParams)));
+      } else if (this.contentType === 'multipart/form-data') {
+        const normalizedformParams = this.normalizeParams(this.formParams);
+        for (const key in normalizedformParams) {
+          if (normalizedformParams.hasOwnProperty(key)) {
+            if (this.isFileParam(normalizedformParams[key])) {
+              // file field
+              request.attach(key, normalizedformParams[key]);
+            } else {
+              request.field(key, normalizedformParams[key]);
+            }
           }
         }
+      } else if (body !== null && body !== undefined) {
+        request.send(body);
       }
-    } else if (body !== null && body !== undefined) {
-      request.send(body);
+
+      if (this.responseType) {
+        request.responseType(this.responseType);
+      }
+
+      return request;
+    } catch (error) {
+      this.logger.error(error);
+      throw error;
     }
-
-    if (this.responseType) request.responseType(this.responseType);
-
-    return request;
   }
 
   /**
@@ -101,7 +128,7 @@ export default class SuperAgentClientImpl implements ISuperAgentClient {
    * @param {String} apiBasePath Base path defined in the path, operation level to override the default one
    * @returns {String} The encoded path with parameter values substituted.
    */
-  buildUrl(path: string, pathParams: any, apiBasePath: string) {
+  private buildUrl(path: string, pathParams: any, apiBasePath: string) {
     if (!path.match(/^\//)) {
       path = '/' + path;
     }
@@ -132,7 +159,7 @@ export default class SuperAgentClientImpl implements ISuperAgentClient {
    * @param param The actual parameter.
    * @returns {String} The string representation of <code>param</code>.
    */
-  paramToString(param: any) {
+  private paramToString(param: any) {
     if (!param) {
       return '';
     }
@@ -144,11 +171,11 @@ export default class SuperAgentClientImpl implements ISuperAgentClient {
   }
 
   /**
-    * Applies authentication headers to the request.
-    * @param {Object} request The request object created by a <code>superagent()</code> call.
-    * @param {Array.<String>} authNames An array of authentication method names.
-    */
-  applyAuthToRequest(authNames: Array<string>) {
+   * Applies authentication headers to the request.
+   * @param {Object} request The request object created by a <code>superagent()</code> call.
+   * @param {Array.<String>} authNames An array of authentication method names.
+   */
+  private applyAuthToRequest(authNames: string[]) {
     authNames.forEach((authName) => {
       switch (authName) {
         case 'basic':
@@ -191,11 +218,11 @@ export default class SuperAgentClientImpl implements ISuperAgentClient {
    * @param {Object.<String, Object>} params The parameters as object properties.
    * @returns {Object.<String, Object>} normalized parameters.
    */
-  normalizeParams(params: any) {
-    let newParams: any = {};
-    for (let key in params) {
-      if (params.hasOwnProperty(key) && params[key] != undefined && params[key] != null) {
-        let value = params[key];
+  private normalizeParams(params: any) {
+    const newParams: any = {};
+    for (const key in params) {
+      if (params.hasOwnProperty(key) && params[key] !== undefined && params[key] !== null) {
+        const value = params[key];
         if (this.isFileParam(value) || Array.isArray(value)) {
           newParams[key] = value;
         } else {
@@ -208,11 +235,11 @@ export default class SuperAgentClientImpl implements ISuperAgentClient {
   }
 
   /**
-    * Checks whether the given parameter value represents file-like content.
-    * @param param The parameter to check.
-    * @returns {Boolean} <code>true</code> if <code>param</code> represents a file.
-    */
-  isFileParam(param: any) {
+   * Checks whether the given parameter value represents file-like content.
+   * @param param The parameter to check.
+   * @returns {Boolean} <code>true</code> if <code>param</code> represents a file.
+   */
+  private isFileParam(param: any) {
     // fs.ReadStream in Node.js and Electron (but not in runtime like browserify)
     if (typeof require === 'function') {
       let fs;
@@ -229,12 +256,12 @@ export default class SuperAgentClientImpl implements ISuperAgentClient {
       return true;
     }
 
-    // Blob in browser
+    // Blob in Node.js
     if (typeof Blob === 'function' && param instanceof Blob) {
       return true;
     }
 
-    // File in browser (it seems File object is also instance of Blob, but keep this for safe)
+    // File in Node.js (it seems File object is also instance of Blob, but keep this for safe)
     if (typeof File === 'function' && param instanceof File) {
       return true;
     }
