@@ -1,29 +1,29 @@
-import SuperAgentClientImpl from './clients/superAgentClientImpl';
+import SuperAgentClientImpl from './clients/superAgentClient';
+import ClientFactory from './clients/clientFactory';
+import Client from './models/client';
 
-export default class ClientSdkFactory {
+export default class ClientSdk {
   /**
    * Http client.
-   * @type {Object<SuperAgent | Axios | any>}
+   * @type {ClientFactory}
    */
-  public clientImpl: any;
+  public clientImpl: ClientFactory;
 
   /**
-   * Instantiate implemented client object
+   * Instantiate class
    * @param {String} client
    * @param {Object} config
-   * @returns {Object}
    */
-  constructor(client: string, config: any) {
+  constructor(client: string, config: Client) {
     if (!client) {
       throw new Error('client is required');
-    }
-    
-    if (!config) {
-      throw new Error('config is required');
     }
 
     if (client === 'superagent') {
       this.clientImpl = new SuperAgentClientImpl(config);
+    } else {
+      // for future use, if want to use other http client.
+      this.clientImpl = {} as ClientFactory;
     }
   }
 

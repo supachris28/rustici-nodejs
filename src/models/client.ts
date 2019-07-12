@@ -1,4 +1,4 @@
-export default interface SuperAgentClient {
+export default interface Client {
   /**
    * The base URL against which to resolve every API call's (relative) path.
    * @type {String}
@@ -74,32 +74,8 @@ export default interface SuperAgentClient {
   responseType: string;
 
   /**
-   * Post request.
-   * @param {String} path 
-   * @param {Object} body 
-   * @returns {Promise<Object>}
+   * The MIME type for the API calls
+   * @type {string}
    */
-  postRequest(path: string, body: object): Promise<object>;
-
-  /**
-   * Get request.
-   * @param {String} path 
-   * @returns {Promise<Object>}
-   */
-  getRequest(path: string): Promise<object>;
-
-  /**
-   * Put request.
-   * @param {String} path 
-   * @param {Object} body 
-   * @returns {Promise<Object>}
-   */
-  putRequest(path: string, body: object): Promise<object>;
-
-  /**
-   * Delete request.
-   * @param {String} path  
-   * @returns {Promise<Object>}
-   */
-  deleteRequest(path: string): Promise<object>;
+  contentType: string;
 }
