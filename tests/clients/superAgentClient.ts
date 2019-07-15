@@ -1,4 +1,5 @@
 /* tslint disable:no-string-literal: 0 */
+
 import { expect } from 'chai';
 import * as Nock from 'nock';
 import SuperAgentClient from '../../src/clients/superAgentClient';
@@ -244,7 +245,7 @@ describe('SuperAgent client', () => {
       config.contentType = 'application/x-www-form-urlencoded';
       config.formParams = body;
       const implementation = new SuperAgentClient(config);
-      const request = <any>Object.assign({}, implementation.createRequest(method, path, undefined));
+      const request = Object.assign({}, implementation.createRequest(method, path, undefined)) as any;
       expect(request.method).to.be.eql(method);
       expect(request.url).to.be.eql(`${config.basePath}${path}`);
       expect(request.header).to.be.a('object');
