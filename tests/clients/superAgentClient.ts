@@ -1,5 +1,4 @@
 /* tslint disable:no-string-literal: 0 */
-/* tslint disable:no-angle-bracket-type-assertion: 0*/
 import { expect } from 'chai';
 import * as Nock from 'nock';
 import SuperAgentClient from '../../src/clients/superAgentClient';
@@ -252,7 +251,6 @@ describe('SuperAgent client', () => {
       expect(request.header).to.have.ownProperty('Content-Type');
       expect(request.header['Content-Type']).to.be.eql('application/x-www-form-urlencoded');
 
-      /* tslint:disable:no-string-literal */
       expect(request['_data']).to.be.a('string');
       expect(request['_data']).to.be.eql(`${Object.keys(body)[0]}=${body.userId}`);
     });
@@ -263,7 +261,7 @@ describe('SuperAgent client', () => {
       config.contentType = 'multipart/form-data';
       config.formParams = body;
       const implementation = new SuperAgentClient(config);
-      const request = <any>Object.assign({}, implementation.createRequest(method, path, undefined));
+      const request = Object.assign({}, implementation.createRequest(method, path, undefined)) as any;
       expect(request.method).to.be.eql(method);
       expect(request.url).to.be.eql(`${config.basePath}${path}`);
       expect(request).to.have.ownProperty('_formData');
