@@ -33,7 +33,7 @@
   "engines": {
     "node": ">=8.10"
   },
-  "license": "Apache-2.0",
+  "license": "MIT",
   "homepage": "https://github.com/PacktDev/rustici-nodejs#readme",
   "dependencies": {
     "@types/debug": "4.1.4",
