@@ -4,6 +4,7 @@ import debug from 'debug';
 import ClientFactory from './clientFactory';
 import Logger from '../models/logger';
 import Client from '../models/client';
+/* tslint:disable-next-line */
 import Response from '../models/response';
 
 export default class SuperAgentClient extends ClientFactory {
@@ -79,7 +80,6 @@ export default class SuperAgentClient extends ClientFactory {
         request.responseType(this.responseType);
       }
 
-      console.log(request);
       return request;
     } catch (error) {
       this.logger.error(error);

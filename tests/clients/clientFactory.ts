@@ -1,9 +1,7 @@
 import { expect } from 'chai';
-const fs = require('fs');
-const rewire = require('rewire');
-import ClientFactory from '../../src/clients/clientFactory';
+import fs = require('fs');
 import SuperAgentClient from '../../src/clients/superAgentClient';
-import { SuperAgent, Response } from 'superagent';
+import { Response } from 'superagent';
 
 const config = { username: 'Chandler Bing', password: 'Monica Geller', apiKey: 'qWeRty', accessToken: 'token', authTypes: ['basic'], pathParams: {}, queryParams: {}, headerParams: {}, formParams: {}, responseType: 'application/json', basePath: 'https://fake.url.com', timeout: 60000, contentType: 'application/json'};
 
@@ -110,7 +108,7 @@ describe('Client factory', () => {
     it('Should return empty response for 204 status code', () => {
       const implementation = new SuperAgentClient(config);
       const response = implementation.deserialize({ status: 204} as Response, config.responseType);
-      expect(response).to.be.empty;
+      expect(Object.keys(response).length).to.be.eql(0);
     });
     it('Should return response when body is empty', () => {
       const implementation = new SuperAgentClient(config);

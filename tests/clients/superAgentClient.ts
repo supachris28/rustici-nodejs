@@ -1,10 +1,11 @@
+/* tslint disable:no-string-literal: 0 */
+/* tslint no-angle-bracket-type-assertion: 0*/
 import { expect } from 'chai';
 import * as Nock from 'nock';
-import * as Superagent from 'superagent';
 import SuperAgentClient from '../../src/clients/superAgentClient';
-const fs = require('fs');
+import fs = require('fs');
 
-let config = { username: 'Chandler Bing', password: 'Trasnponster', apiKey: 'qWeRty', accessToken: 'token', authTypes: ['basic'], pathParams: {}, queryParams: {}, headerParams: {}, formParams: {}, responseType: 'application/json', basePath: 'https://fake.url.com', timeout: 60000, contentType: 'application/json' };
+const config = { username: 'Chandler Bing', password: 'Trasnponster', apiKey: 'qWeRty', accessToken: 'token', authTypes: ['basic'], pathParams: {}, queryParams: {}, headerParams: {}, formParams: {}, responseType: 'application/json', basePath: 'https://fake.url.com', timeout: 60000, contentType: 'application/json' };
 
 describe('SuperAgent client', () => {
   describe('Constructor', () => {
@@ -251,6 +252,7 @@ describe('SuperAgent client', () => {
       expect(request.header).to.have.ownProperty('Content-Type');
       expect(request.header['Content-Type']).to.be.eql('application/x-www-form-urlencoded');
 
+      /* tslint:disable:no-string-literal */
       expect(request['_data']).to.be.a('string');
       expect(request['_data']).to.be.eql(`${Object.keys(body)[0]}=${body.userId}`);
     });

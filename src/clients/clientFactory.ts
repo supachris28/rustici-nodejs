@@ -44,14 +44,14 @@ export default abstract class ClientFactory {
    * @param {Object} body 
    * @returns {Promise<Object>}
    */
-  abstract postRequest(path: string, body: object): Promise<Response>;
+  protected abstract postRequest(path: string, body: object): Promise<Response>;
 
   /**
    * Get request.
    * @param {String} path 
    * @returns {Promise<Object>}
    */
-  abstract getRequest(path: string): Promise<Response | null>;
+  protected abstract getRequest(path: string): Promise<Response>;
 
   /**
    * Put request.
@@ -59,14 +59,14 @@ export default abstract class ClientFactory {
    * @param {Object} body 
    * @returns {Promise<Object>}
    */
-  abstract putRequest(path: string, body: object): Promise<Response | null>;
+  protected abstract putRequest(path: string, body: object): Promise<Response>;
 
   /**
    * Delete request.
    * @param {String} path  
    * @returns {Promise<Object>}
    */
-  abstract deleteRequest(path: string): Promise<Response | null>;
+  protected abstract deleteRequest(path: string): Promise<Response>;
 
   /**
    * Creates the request.
@@ -75,7 +75,7 @@ export default abstract class ClientFactory {
    * @param {Object} body
    * @returns {Promise<Superagent.SuperAgentRequest | AxiosInstance>} 
    */
-  abstract createRequest(httpMethod: string, path: string, body: any): Superagent.SuperAgentRequest | AxiosInstance;
+  protected abstract createRequest(httpMethod: string, path: string, body: any): Superagent.SuperAgentRequest | AxiosInstance;
 
   /**
    * Builds full URL by appending the given path to the base URL and replacing path parameter place-holders with parameter values.
