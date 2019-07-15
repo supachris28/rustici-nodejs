@@ -15,4 +15,8 @@ describe('Index', () => {
     const client = new Index('superagent', config);
     expect(client.clientImpl).to.instanceof(SuperAgentClient);
   });
+  it('Should instantiate the empty ClientFactory object', () => {
+    const client = new Index('Axios', config);
+    expect(client.clientImpl).to.be.empty;
+  });
 })

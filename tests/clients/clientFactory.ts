@@ -111,6 +111,12 @@ describe('Client factory', () => {
       const implementation = new SuperAgentClient(config);
       const response = implementation.deserialize({ status: 204} as Response, config.responseType);
       expect(response).to.be.empty;
+    });
+    it('Should return response when body is empty', () => {
+      const implementation = new SuperAgentClient(config);
+      const response = implementation.deserialize({ body: {}, text: "success", status: 200} as Response, config.responseType);
+      expect(response.status).to.be.eql(200);
+      expect(response.data).to.be.eql('success');
     })
   });
 })
