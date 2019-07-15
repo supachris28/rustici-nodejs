@@ -1,5 +1,5 @@
 /* tslint disable:no-string-literal: 0 */
-/* tslint no-angle-bracket-type-assertion: 0*/
+/* tslint disable:no-angle-bracket-type-assertion: 0*/
 import { expect } from 'chai';
 import * as Nock from 'nock';
 import SuperAgentClient from '../../src/clients/superAgentClient';

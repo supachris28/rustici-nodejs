@@ -4,7 +4,6 @@ import debug from 'debug';
 import ClientFactory from './clientFactory';
 import Logger from '../models/logger';
 import Client from '../models/client';
-/* tslint:disable-next-line */
 import Response from '../models/response';
 
 export default class SuperAgentClient extends ClientFactory {
@@ -22,22 +21,22 @@ export default class SuperAgentClient extends ClientFactory {
     this.logger = { info: infoLogger, error: errorLogger };
   }
 
-  public postRequest(path: string, body: object) {
+  public postRequest(path: string, body: object): Promise<Response> {
     const request = this.createRequest('post', path, body);
     return request.then(response => this.deserialize(response, this.responseType));
   }
 
-  public getRequest(path: string) {
+  public getRequest(path: string): Promise<Response> {
     const request = this.createRequest('get', path, undefined);
     return request.then(response => this.deserialize(response, this.responseType));
   }
 
-  public putRequest(path: string, body: object) {
+  public putRequest(path: string, body: object): Promise<Response> {
     const request = this.createRequest('put', path, body);
     return request.then(response => this.deserialize(response, this.responseType));
   }
 
-  public deleteRequest(path: string) {
+  public deleteRequest(path: string): Promise<Response> {
     const request = this.createRequest('delete', path, undefined);
     return request.then(response => this.deserialize(response, this.responseType));
   }
