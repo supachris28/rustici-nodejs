@@ -8,13 +8,9 @@
       true,
       "never-prefix"
     ],
+    "no-string-literal": false,
     "member-ordering": false,
     "ordered-imports": false,
     "object-literal-sort-keys": false
-  },
-  "linterOptions": {
-    "exclude": [
-      "tests"
-    ]
   }
 }
