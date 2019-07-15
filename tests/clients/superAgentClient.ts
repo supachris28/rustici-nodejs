@@ -176,7 +176,7 @@ describe('SuperAgent client', () => {
     it('Should create a proper superagent request with basic auth', () => {
       config.authTypes = ['basic'];
       const implementation = new SuperAgentClient(config);
-      const request = <any>Object.assign({}, implementation.createRequest(method, path, undefined));
+      const request = Object.assign({}, implementation.createRequest(method, path, undefined)) as any;
       expect(request.method).to.be.eql(method);
       expect(request.url).to.be.eql(`${config.basePath}${path}`);
       expect(request.header).to.be.a('object');
@@ -195,7 +195,7 @@ describe('SuperAgent client', () => {
       config.username = '';
       config.password = '';
       const implementation = new SuperAgentClient(config);
-      const request = <any>Object.assign({}, implementation.createRequest(method, path, undefined));
+      const request = Object.assign({}, implementation.createRequest(method, path, undefined)) as any;
       expect(request.method).to.be.eql(method);
       expect(request.url).to.be.eql(`${config.basePath}${path}`);
       expect(request.header).to.be.a('object');
@@ -204,7 +204,7 @@ describe('SuperAgent client', () => {
     it('Should create a proper superagent request with bearer', () => {
       config.authTypes = ['bearer'];
       const implementation = new SuperAgentClient(config);
-      const request = <any>Object.assign({}, implementation.createRequest(method, path, undefined));
+      const request = Object.assign({}, implementation.createRequest(method, path, undefined)) as any;
       expect(request.method).to.be.eql(method);
       expect(request.url).to.be.eql(`${config.basePath}${path}`);
       expect(request.header).to.be.a('object');
@@ -214,7 +214,7 @@ describe('SuperAgent client', () => {
     it('Should create a proper superagent request with x-api-key', () => {
       config.authTypes = ['apiKey'];
       const implementation = new SuperAgentClient(config);
-      const request = <any>Object.assign({}, implementation.createRequest(method, path, undefined));
+      const request = Object.assign({}, implementation.createRequest(method, path, undefined)) as any;
       expect(request.method).to.be.eql(method);
       expect(request.url).to.be.eql(`${config.basePath}${path}`);
       expect(request.header).to.be.a('object');
@@ -224,7 +224,7 @@ describe('SuperAgent client', () => {
     it('Should create a proper superagent request with x-api-key in query param', () => {
       config.authTypes = ['apiKeyQuery'];
       const implementation = new SuperAgentClient(config);
-      const request = <any>Object.assign({}, implementation.createRequest(method, path, undefined));
+      const request = Object.assign({}, implementation.createRequest(method, path, undefined)) as any;
       expect(request.method).to.be.eql(method);
       expect(request.url).to.be.eql(`${config.basePath}${path}`);
       expect(request.qs).to.be.a('object');
