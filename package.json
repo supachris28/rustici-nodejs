@@ -1,0 +1,100 @@
+{
+  "name": "@packt/rustici-sdk",
+  "version": "0.0.1",
+  "description": "Wrapper for Rustici API",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "sideEffects": false,
+  "files": [
+    "dist/**/*"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "lint": "tslint -p tsconfig.json",
+    "lint:fix": "tslint -p tsconfig.json --fix",
+    "test": "nyc mocha --require ts-node/register --require source-map-support/register --recursive 'tests/**/*.ts'",
+    "clean": "rm -rf dist && rm -rf coverage && rm -rf .nyc_output",
+    "prepublishOnly": "npm run lint && npm run test && npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/PacktDev/rustici-nodejs.git"
+  },
+  "author": {
+    "name": "Packt Publishing Ltd",
+    "url": "https://www.packtpub.com/"
+  },
+  "contributors": [
+    {
+      "name": "Ashutosh Bane",
+      "email": "baneashutosh10@gmail.com"
+    }
+  ],
+  "engines": {
+    "node": ">=8.10"
+  },
+  "license": "MIT",
+  "homepage": "https://github.com/PacktDev/rustici-nodejs#readme",
+  "dependencies": {
+    "@types/debug": "4.1.4",
+    "@types/superagent": "4.1.2",
+    "debug": "4.1.1",
+    "superagent": "3.7.0",
+    "axios": "0.18.0"
+  },
+  "devDependencies": {
+    "@types/chai": "4.1.7",
+    "@types/mocha": "5.2.5",
+    "@types/nock": "9.3.1",
+    "@types/rewire": "2.5.28",
+    "chai": "4.2.0",
+    "husky": "1.3.1",
+    "lint-staged": "8.1.3",
+    "mocha": "5.2.0",
+    "nock": "10.0.6",
+    "node-typescript": "0.1.3",
+    "nyc": "13.2.0",
+    "prettier": "1.16.4",
+    "rewire": "4.0.1",
+    "source-map-support": "0.5.10",
+    "superagent-mock": "3.7.0",
+    "ts-node": "8.0.2",
+    "tslint": "5.12.1",
+    "tslint-config-prettier": "1.18.0",
+    "typescript": "3.3.3"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "linters": {
+      "*.{ts}": [
+        "prettier --write",
+        "git add"
+      ]
+    }
+  },
+  "nyc": {
+    "check-coverage": true,
+    "lines": 90,
+    "statements": 90,
+    "functions": 90,
+    "branches": 90,
+    "extension": [
+      ".ts"
+    ],
+    "include": [
+      "src/**/*.ts"
+    ],
+    "exclude": [
+      "**/*.d.ts"
+    ],
+    "reporter": [
+      "lcov",
+      "html"
+    ],
+    "all": true
+  }
+}

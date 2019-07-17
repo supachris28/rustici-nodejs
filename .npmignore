@@ -1,0 +1,11 @@
+.circleci/
+coverage/
+node_modules/
+tests/
+.editorconfig
+.istanbul.yml
+.eslintrc
+.babelrc
+webpack.config.js
+src/
+index.js
