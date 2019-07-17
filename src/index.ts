@@ -14,11 +14,7 @@ export default class ClientSdk {
    * @param {String} client
    * @param {Object} config
    */
-  constructor(client: string, config: Client) {
-    if (!client) {
-      throw new Error('client is required');
-    }
-
+  constructor(client: string = 'superagent', config: Client) {
     if (client === 'superagent') {
       this.clientImpl = new SuperAgentClientImpl(config);
     } else {
