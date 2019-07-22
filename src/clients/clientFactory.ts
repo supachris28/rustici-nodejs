@@ -30,7 +30,7 @@ export default abstract class ClientFactory {
     this.authTypes = config.authTypes;
     this.basePath = config.basePath;
     this.pathParams = config.pathParams;
-    this.queryParams = config.pathParams;
+    this.queryParams = config.queryParams;
     this.headerParams = config.headerParams;
     this.formParams = config.formParams;
     this.timeout = config.timeout || 60000;
