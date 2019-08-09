@@ -49,11 +49,11 @@ export default class SuperAgentClient extends ClientFactory {
       let request = Superagent(httpMethod, url);
       request = this.applyAuthToRequest(request, this.authTypes);
 
-      if (this.queryParams) {
+      if (this.queryParams && Object.keys(this.queryParams).length) {
         request.query(this.normalizeParams(this.queryParams));
       }
 
-      if (this.headerParams) {
+      if (this.headerParams && Object.keys(this.headerParams).length) {
         request.set(this.normalizeParams(this.headerParams));
       }
 
