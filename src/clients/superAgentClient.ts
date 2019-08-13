@@ -21,22 +21,22 @@ export default class SuperAgentClient extends ClientFactory {
     this.logger = { info: infoLogger, error: errorLogger };
   }
 
-  public postRequest(path: string, body: object): Promise<Response> {
+  public postRequest<T>(path: string, body: object): Promise<Response<T>> {
     const request = this.createRequest('post', path, body);
     return request.then(response => this.deserialize(response, this.responseType));
   }
 
-  public getRequest(path: string): Promise<Response> {
+  public getRequest<T>(path: string): Promise<Response<T>> {
     const request = this.createRequest('get', path, undefined);
     return request.then(response => this.deserialize(response, this.responseType));
   }
 
-  public putRequest(path: string, body: object): Promise<Response> {
+  public putRequest<T>(path: string, body: object): Promise<Response<T>> {
     const request = this.createRequest('put', path, body);
     return request.then(response => this.deserialize(response, this.responseType));
   }
 
-  public deleteRequest(path: string): Promise<Response> {
+  public deleteRequest<T>(path: string): Promise<Response<T>> {
     const request = this.createRequest('delete', path, undefined);
     return request.then(response => this.deserialize(response, this.responseType));
   }

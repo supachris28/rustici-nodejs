@@ -1,8 +1,10 @@
 import SuperAgentClientImpl from './clients/superAgentClient';
 import ClientFactory from './clients/clientFactory';
 import Client from './models/client';
+import Response from './models/response';
+import CourseSchema from './models/rustici-course-schema';
 
-export default class ClientSdk {
+export default class RusticiSdk {
   /**
    * Http client.
    * @type {ClientFactory}
@@ -23,4 +25,11 @@ export default class ClientSdk {
     }
   }
 
+  /**
+   * Returns a list of all courses
+   * @returns {Promise<Response<CourseSchema>>}
+   */
+  public async getCourses(): Promise<Response<CourseSchema>> {
+    return await this.clientImpl.getRequest<CourseSchema>('/courses');
+  }
 }
