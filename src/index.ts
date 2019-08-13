@@ -2,7 +2,10 @@ import SuperAgentClientImpl from './clients/superAgentClient';
 import ClientFactory from './clients/clientFactory';
 import Client from './models/client';
 import Response from './models/response';
-import CourseSchema from './models/rustici-course-schema';
+import ICourseSchema from './models/rustici-course-schema';
+import IRegistrationSchema from './models/rustici-registration-schema';
+import ILaunchLinkRequest from './models/rustici-launch-link-request-interface';
+import ILaunchLink from './models/rustici-launch-link-interface';
 
 export default class RusticiSdk {
   /**
@@ -27,9 +30,29 @@ export default class RusticiSdk {
 
   /**
    * Returns a list of all courses
-   * @returns {Promise<Response<CourseSchema>>}
+   * @returns {Promise<Response<ICourseSchema>>} course details
    */
-  public async getCourses(): Promise<Response<CourseSchema>> {
-    return await this.clientImpl.getRequest<CourseSchema>('/courses');
+  public async getCourses(): Promise<Response<ICourseSchema>> {
+    return this.clientImpl.getRequest<ICourseSchema>('/courses');
+  }
+
+  /**
+   * Registers a user
+   * @param registrationDetails registration details
+   * @returns {Promise<Response<void>>} no response
+   */
+  public async registerUser(registrationDetails: IRegistrationSchema):
+  Promise<Response<void>> {
+    return this.clientImpl.postRequest('/registrations', registrationDetails);
+  }
+
+  /**
+   * Get launch url from registration id
+   * @param registrationId registration id
+   * @param launchDetails launch details
+   * @returns {Promise<Response<ILaunchLink>>} launch link
+   */
+  public async getLaunchLink(registrationId: string, launchDetails: ILaunchLinkRequest): Promise<Response<ILaunchLink>> {
+    return this.clientImpl.getRequest(`/registrations/${registrationId}/launchLink`);
   }
 }
