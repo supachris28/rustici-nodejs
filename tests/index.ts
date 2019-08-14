@@ -37,7 +37,7 @@ describe('Index', () => {
         .get(path)
         .reply(200, expectedResult);
 
-      await client.getCourses()
+      await client.courses.get()
         .then((response) => {
           expect(response).to.have.ownProperty('status');
           expect(response).to.have.ownProperty('data');
@@ -56,7 +56,7 @@ describe('Index', () => {
         .post(path)
         .reply(204);
 
-      await client.registerUser(request)
+      await client.registrations.registerUser(request)
         .then(() => {
           expect(nock.isDone());
         });
@@ -72,7 +72,7 @@ describe('Index', () => {
         .get(path)
         .reply(200, expectedResult);
 
-      await client.getLaunchLink('987', request)
+      await client.registrations.getLaunchLink('987', request)
         .then((response) => {
           expect(response).to.have.ownProperty('status');
           expect(response).to.have.ownProperty('data');

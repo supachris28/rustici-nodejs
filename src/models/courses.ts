@@ -13,7 +13,7 @@ export default class Courses {
    * Returns a list of all courses
    * @returns {Promise<IResponse<ICourse>>} course details
    */
-  public async getCourses(): Promise<IResponse<ICourse>> {
+  public async get(): Promise<IResponse<ICourse>> {
     return this.client.getRequest<ICourse>('/courses');
   }
 }
