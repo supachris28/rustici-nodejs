@@ -1,4 +1,4 @@
-export default interface ICourseActivitySchema {
+export default interface ICourseActivity {
   externalIdentifier: string;
   itemIdentifier: string;
   resourceIdentifier: string;

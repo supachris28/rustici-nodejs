@@ -2,9 +2,9 @@ import * as Superagent from 'superagent';
 import * as querystring from 'querystring';
 import debug from 'debug';
 import ClientFactory from './clientFactory';
-import ILogger from '../models/logger-interface';
-import IClient from '../models/client-interface';
-import IResponse from '../models/response-interface';
+import ILogger from '../interfaces/logger-interface';
+import IClient from '../interfaces/client-interface';
+import IResponse from '../interfaces/response-interface';
 
 export default class SuperAgentClient extends ClientFactory {
   private logger: ILogger;

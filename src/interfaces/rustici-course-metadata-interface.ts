@@ -1,4 +1,4 @@
-export default interface ICourseMetadataSchema {
+export default interface ICourseMetadata {
   title: string;
   titleLanguage: string;
   description: string;
