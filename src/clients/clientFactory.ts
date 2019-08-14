@@ -1,7 +1,7 @@
 import Superagent from 'superagent';
 import { AxiosInstance } from 'axios';
-import Client from '../models/client';
-import Response from '../models/response';
+import Client from '../models/client-interface';
+import Response from '../models/response-interface';
 
 export default abstract class ClientFactory {
   public username: string;

@@ -1,7 +1,7 @@
 import SuperAgentClientImpl from './clients/superAgentClient';
 import ClientFactory from './clients/clientFactory';
-import Client from './models/client';
-import Response from './models/response';
+import IClient from './models/client-interface';
+import IResponse from './models/response-interface';
 import ICourseSchema from './models/rustici-course-schema';
 import IRegistrationSchema from './models/rustici-registration-schema';
 import ILaunchLinkRequest from './models/rustici-launch-link-request-interface';
@@ -19,7 +19,7 @@ export default class RusticiSdk {
    * @param {String} client
    * @param {Object} config
    */
-  constructor(client: string = 'superagent', config: Client) {
+  constructor(client: string = 'superagent', config: IClient) {
     if (client === 'superagent') {
       this.clientImpl = new SuperAgentClientImpl(config);
     } else {
@@ -30,19 +30,19 @@ export default class RusticiSdk {
 
   /**
    * Returns a list of all courses
-   * @returns {Promise<Response<ICourseSchema>>} course details
+   * @returns {Promise<IResponse<ICourseSchema>>} course details
    */
-  public async getCourses(): Promise<Response<ICourseSchema>> {
+  public async getCourses(): Promise<IResponse<ICourseSchema>> {
     return this.clientImpl.getRequest<ICourseSchema>('/courses');
   }
 
   /**
    * Registers a user
    * @param registrationDetails registration details
-   * @returns {Promise<Response<void>>} no response
+   * @returns {Promise<IResponse<void>>} no response
    */
   public async registerUser(registrationDetails: IRegistrationSchema):
-  Promise<Response<void>> {
+  Promise<IResponse<void>> {
     return this.clientImpl.postRequest('/registrations', registrationDetails);
   }
 
@@ -50,9 +50,9 @@ export default class RusticiSdk {
    * Get launch url from registration id
    * @param registrationId registration id
    * @param launchDetails launch details
-   * @returns {Promise<Response<ILaunchLink>>} launch link
+   * @returns {Promise<IResponse<ILaunchLink>>} launch link
    */
-  public async getLaunchLink(registrationId: string, launchDetails: ILaunchLinkRequest): Promise<Response<ILaunchLink>> {
+  public async getLaunchLink(registrationId: string, launchDetails: ILaunchLinkRequest): Promise<IResponse<ILaunchLink>> {
     return this.clientImpl.getRequest(`/registrations/${registrationId}/launchLink`);
   }
 }

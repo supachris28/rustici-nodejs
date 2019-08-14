@@ -1,4 +1,4 @@
-export default interface Response<T> {
+export default interface IResponse<T> {
   /**
    * Response status
    */
