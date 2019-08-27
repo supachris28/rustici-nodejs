@@ -5,7 +5,7 @@ import ILaunchLinkRequest from "../interfaces/rustici-launch-link-request-interf
 import ILaunchLink from "../interfaces/rustici-launch-link-interface";
 
 export default class Registrations {
-  client: ClientFactory;
+  private client: ClientFactory;
 
   constructor(clientFactory: ClientFactory) {
     this.client = clientFactory;
