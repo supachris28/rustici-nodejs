@@ -3,7 +3,7 @@ import ICourse from "../interfaces/rustici-course-interface";
 import IResponse from "../interfaces/response-interface";
 
 export default class Courses {
-  client: ClientFactory;
+  private client: ClientFactory;
 
   constructor(clientFactory: ClientFactory) {
     this.client = clientFactory;
