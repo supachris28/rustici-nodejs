@@ -69,7 +69,7 @@ describe('Index', () => {
       const client = new RusticiSdk(undefined, config);
 
       Nock(config.basePath)
-        .get(path)
+        .post(path)
         .reply(200, expectedResult);
 
       await client.registrations.getLaunchLink('987', request)
