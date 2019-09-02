@@ -28,6 +28,6 @@ export default class Registrations {
    * @returns {Promise<IResponse<ILaunchLink>>} launch link
    */
   public async getLaunchLink(registrationId: string, launchDetails: ILaunchLinkRequest): Promise<IResponse<ILaunchLink>> {
-    return this.client.getRequest(`/registrations/${registrationId}/launchLink`);
+    return this.client.postRequest(`/registrations/${registrationId}/launchLink`, launchDetails);
   }
 }
