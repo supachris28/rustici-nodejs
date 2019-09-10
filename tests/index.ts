@@ -8,19 +8,19 @@ const config = { username: 'Chandler Bing', password: 'Trasnponster', apiKey: 'q
 
 describe('Index', () => {
   it('Should instantiate the SuperAgent object when empty client not passed', () => {
-    const client = new RusticiSdk(undefined, config);
+    const client = new RusticiSdk(config, undefined);
     expect(client).to.be.a('object');
     expect(client).to.have.ownProperty('clientImpl');
     expect(client.clientImpl).to.instanceof(SuperAgentClient);
   });
   it('Should instantiate the SuperAgent object', () => {
-    const client = new RusticiSdk('superagent', config);
+    const client = new RusticiSdk(config, 'superagent');
     expect(client).to.be.a('object');
     expect(client).to.have.ownProperty('clientImpl');
     expect(client.clientImpl).to.instanceof(SuperAgentClient);
   });
   it('Should instantiate the empty ClientFactory object', () => {
-    const client = new RusticiSdk('Axios', config);
+    const client = new RusticiSdk(config, 'Axios');
     expect(client).to.be.a('object');
     expect(client).to.have.ownProperty('clientImpl');
     expect(client.clientImpl).to.be.a('object');
@@ -31,7 +31,7 @@ describe('Index', () => {
     it('getCourses', async () => {
       const expectedResult = { courses: [{ title: 'Joey Tribbiani', id: '30', webPath: 'ok' }] };
       const path = '/courses';
-      const client = new RusticiSdk(undefined, config);
+      const client = new RusticiSdk(config, undefined);
 
       Nock(config.basePath)
         .get(path)
@@ -50,7 +50,7 @@ describe('Index', () => {
     it('registerUser', async () => {
       const request = { courseId: '123', learner: { id: '456', firstName: 'Joey', lastName: 'Tribiani' }, registrationId: '987' };
       const path = '/registrations';
-      const client = new RusticiSdk(undefined, config);
+      const client = new RusticiSdk(config, undefined);
 
       const nock = Nock(config.basePath)
         .post(path)
@@ -66,7 +66,7 @@ describe('Index', () => {
       const request = { expiry: 10, redirectOnExitUrl: 'https:goiogle.com' };
       const expectedResult = { launchLink: 'https://launch.url' };
       const path = '/registrations/987/launchLink';
-      const client = new RusticiSdk(undefined, config);
+      const client = new RusticiSdk(config, undefined);
 
       Nock(config.basePath)
         .post(path)
@@ -79,6 +79,24 @@ describe('Index', () => {
           expect(response.status).to.be.eql(200);
           expect(response.data.launchLink).to.be.eql('https://launch.url');
         });
+    });
+
+    it('add webhook configuration', async () => {
+      const path = '/registrations/987/configuration'
+      const client = new RusticiSdk(config, undefined);
+      const configuration = {
+        settings: [{
+          settingId: 'ApiRollupRegistrationPostBackUrl',
+          value: 'http://post-back-url.com/bringitback',
+        }]
+      };
+
+      const nock = Nock(config.basePath)
+        .post(path)
+        .reply(204);
+
+        await client.registrations.addWebhookSettings('987', configuration)
+        .then(() => expect(nock.isDone()));
     });
   });
 })
