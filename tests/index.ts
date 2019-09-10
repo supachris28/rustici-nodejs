@@ -31,7 +31,7 @@ describe('Index', () => {
     it('getCourses', async () => {
       const expectedResult = { courses: [{ title: 'Joey Tribbiani', id: '30', webPath: 'ok' }] };
       const path = '/courses';
-      const client = new RusticiSdk(config, undefined);
+      const client = new RusticiSdk(undefined, config);
 
       Nock(config.basePath)
         .get(path)
