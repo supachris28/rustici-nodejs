@@ -18,7 +18,7 @@ export default class RusticiSdk {
    * @param {String} client
    * @param {Object} config
    */
-  constructor(config: IClient, client: string = 'superagent') {
+  constructor(client: string = 'superagent', config: IClient) {
     if (client === 'superagent') {
       this.clientImpl = new SuperAgentClientImpl(config);
     } else {

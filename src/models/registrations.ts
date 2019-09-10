@@ -3,7 +3,7 @@ import IRegistrationSchema from "../interfaces/rustici-registration-schema";
 import IResponse from "../interfaces/response-interface";
 import ILaunchLinkRequest from "../interfaces/rustici-launch-link-request-interface";
 import ILaunchLink from "../interfaces/rustici-launch-link-interface";
-import IWebhookConfig from "../interfaces/rustici-webhook-config-list";
+import IConfig from "../interfaces/rustici-config";
 
 export default class Registrations {
   private client: ClientFactory;
@@ -38,7 +38,7 @@ export default class Registrations {
    * @param configuration settings
    * @returns {Promise<IResponse<void>>} no response
    */
-  public async addWebhookSettings(registrationId: string, configuration: IWebhookConfig): Promise<IResponse<void>> {
+  public async addWebhookSettings(registrationId: string, configuration: IConfig): Promise<IResponse<void>> {
     return this.client.postRequest(`/registrations/${registrationId}/configuration`, configuration);
   }
 }

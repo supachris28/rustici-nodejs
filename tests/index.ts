@@ -8,19 +8,19 @@ const config = { username: 'Chandler Bing', password: 'Trasnponster', apiKey: 'q
 
 describe('Index', () => {
   it('Should instantiate the SuperAgent object when empty client not passed', () => {
-    const client = new RusticiSdk(config, undefined);
+    const client = new RusticiSdk(undefined, config);
     expect(client).to.be.a('object');
     expect(client).to.have.ownProperty('clientImpl');
     expect(client.clientImpl).to.instanceof(SuperAgentClient);
   });
   it('Should instantiate the SuperAgent object', () => {
-    const client = new RusticiSdk(config, 'superagent');
+    const client = new RusticiSdk('superagent', config);
     expect(client).to.be.a('object');
     expect(client).to.have.ownProperty('clientImpl');
     expect(client.clientImpl).to.instanceof(SuperAgentClient);
   });
   it('Should instantiate the empty ClientFactory object', () => {
-    const client = new RusticiSdk(config, 'Axios');
+    const client = new RusticiSdk('Axios', config);
     expect(client).to.be.a('object');
     expect(client).to.have.ownProperty('clientImpl');
     expect(client.clientImpl).to.be.a('object');
@@ -50,7 +50,7 @@ describe('Index', () => {
     it('registerUser', async () => {
       const request = { courseId: '123', learner: { id: '456', firstName: 'Joey', lastName: 'Tribiani' }, registrationId: '987' };
       const path = '/registrations';
-      const client = new RusticiSdk(config, undefined);
+      const client = new RusticiSdk(undefined, config);
 
       const nock = Nock(config.basePath)
         .post(path)
@@ -66,7 +66,7 @@ describe('Index', () => {
       const request = { expiry: 10, redirectOnExitUrl: 'https:goiogle.com' };
       const expectedResult = { launchLink: 'https://launch.url' };
       const path = '/registrations/987/launchLink';
-      const client = new RusticiSdk(config, undefined);
+      const client = new RusticiSdk(undefined, config);
 
       Nock(config.basePath)
         .post(path)
@@ -83,7 +83,7 @@ describe('Index', () => {
 
     it('add webhook configuration', async () => {
       const path = '/registrations/987/configuration'
-      const client = new RusticiSdk(config, undefined);
+      const client = new RusticiSdk(undefined, config);
       const configuration = {
         settings: [{
           settingId: 'ApiRollupRegistrationPostBackUrl',
