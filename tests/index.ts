@@ -88,7 +88,7 @@ describe('Index', () => {
         settings: [{
           settingId: 'ApiRollupRegistrationPostBackUrl',
           value: 'http://post-back-url.com/bringitback',
-        }]
+        }],
       };
 
       const nock = Nock(config.basePath)
