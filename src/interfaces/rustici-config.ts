@@ -1,5 +1,7 @@
 import IConfigItem from './rustici-config-item-interface';
 
-export default interface IConfig {
+interface IConfig {
   settings: IConfigItem[];
 }
+
+export default IConfig;
