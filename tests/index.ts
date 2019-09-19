@@ -98,5 +98,71 @@ describe('Index', () => {
         await client.registrations.addWebhookSettings('987', configuration)
         .then(() => expect(nock.isDone()));
     });
+
+    it('exportCourse', async () => {
+      const expectedResult = { result: 'import-job-id' }
+      const body = { url: 'https://course-signed-url.com'}
+      const courseId = '1c5d2f1c-88f0-490f-9323-680b21a30e94';
+      const mayCreateNewVersion = true;
+      const path = `/courses/importJobs?courseId=${courseId}&mayCreateNewVersion=${mayCreateNewVersion}`;
+      const client = new RusticiSdk(undefined, config);
+
+      Nock(config.basePath)
+        .post(path)
+        .reply(200, expectedResult);
+    
+
+      const response = await client.courses.exportCourse(courseId, body, mayCreateNewVersion);
+      expect(response).to.be.a('object');    
+      expect(response).to.have.ownProperty('status');
+      expect(response).to.have.ownProperty('data');
+      expect(response.status).to.be.eql(200);
+      expect(response.data).to.be.a('object');
+      expect(response.data).to.have.ownProperty('result');
+      expect(response.data.result).to.be.a('string');
+      expect(response.data.result).to.be.eql('import-job-id');
+    });
+
+    it('getCourseUploadProgress', async () => {
+      const importJobId = 'import-job-id';
+      const expectedResult = { jobId: importJobId, status: 'RUNNING', message: 'random' };
+      const path = `/courses/importJobs/${importJobId}`;
+      const client = new RusticiSdk(undefined, config);
+
+      Nock(config.basePath)
+        .get(path)
+        .reply(200, expectedResult);
+
+      const response = await client.courses.getCourseUploadProgress(importJobId);
+      expect(response).to.be.a('object');
+      expect(response).to.have.ownProperty('status');
+      expect(response).to.have.ownProperty('data');
+      expect(response.status).to.be.eql(200);
+      expect(response.data).to.be.a('object');
+      expect(response.data).to.have.ownProperty('jobId');
+      expect(response.data.jobId).to.be.eql('import-job-id');
+      expect(response.data).to.have.ownProperty('status');
+      expect(response.data.status).to.be.eql('RUNNING');
+      expect(response.data).to.have.ownProperty('message');
+      expect(response.data.message).to.be.eql('random');
+    });
+
+    it('getCoursePreviewLink', async () => {
+      const courseId = '1c5d2f1c-88f0-490f-9323-680b21a30e94';
+      const body = { expiry: 10, redirectOnExitUrl: 'https:goiogle.com' };
+      const expectedResult = { launchLink: 'https://launch.url' };
+      const path = `/courses/${courseId}/preview`;
+      const client = new RusticiSdk(undefined, config);
+
+      Nock(config.basePath)
+        .post(path)
+        .reply(200, expectedResult);
+      
+      const response = await client.courses.getCoursePreviewLink(courseId, body);
+      expect(response).to.have.ownProperty('status');
+      expect(response).to.have.ownProperty('data');
+      expect(response.status).to.be.eql(200);
+      expect(response.data.launchLink).to.be.eql('https://launch.url');
+    });
   });
 })
